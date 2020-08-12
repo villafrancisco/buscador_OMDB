@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Login - OMDB</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<header>
+			<h1 class="title">Acceso</h1>
+		</header>
+		<div class="container-login">
+			<h2>LOGIN</h2>
+			<form action="" id="login" class="form" name="form">
+				<div class="form__text">
+					<input type="text" name="name" id="name" placeholder="Nombre" class="input" />
+					<div class="error hidden">Introduce Nombre</div>
+				</div>
+				<div class="form__text">
+					<input type="password" name="password" id="password" placeholder="Contraseña" class="input" />
+					<div class="error hidden">Introduce Contraseña</div>
+				</div>
+
+				<button class="btn" id="btn-log"><i class="fas fa-2x fa-sign-in-alt"></i></button>
+			</form>
+		</div>
+
+		<script src="index.js"></script>
+	</body>
+</html>

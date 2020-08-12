@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Buscador - OMDB</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
+		<link rel="stylesheet" href="styles.css" />
+		<script src="access.js"></script>
+	</head>
+	<body id="searcher">
+		<header id="header">
+			<h1 class="title">Busca tu pelicula</h1>
+		</header>
+
+		<div class="container-search">
+			<div class="container__item hidden" id="back">
+				<i class="far fa-2x fa-arrow-alt-circle-left"></i>
+			</div>
+			<div class="container__item">
+				<form action="" id="search" class="form form-search" name="form">
+					<div class="form__text">
+						<input type="text" name="film" id="film" placeholder="Introduce pelicula" class="input" />
+						<button class="btn" id="btn-search"><i class="fas fa-search"></i></button>
+					</div>
+				</form>
+			</div>
+			<div class="container__item">
+				<i class="fas fa-2x fa-heart" id="favorites"></i>
+				<i class="fa-2x fas fa-sign-out-alt" id="exit"></i>
+			</div>
+		</div>
+		<div class="result" id="result"></div>
+		<div class="modal" id="modal">
+			<div class="detail" id="detail">
+				<i class="far fa-2x fa-window-close" id="close"></i>
+			</div>
+		</div>
+		<script src="https://unpkg.com/axios/dist/axios.min.js "></script>
+		<script src="search.js"></script>
+	</body>
+</html>
