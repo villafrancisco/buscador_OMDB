@@ -243,7 +243,24 @@ favorites.addEventListener('click', (e) => {
 	document.getElementById('header').firstElementChild.textContent = 'Favoritos';
 	result.innerHTML = '';
 	//Buscar cada pelicula de favoritos
-	console.log(user.fav);
+	if (user.fav.length == 0) {
+		//No hay favoritos agregados
+		result.innerHTML = '<h2>No tienes favoritos añadidos</h2>';
+	} else {
+		for (const favid of user.fav) {
+			axios({
+				method: 'GET',
+				url: `http://www.omdbapi.com/?i=${favid}&apikey=87ed9d5a`
+			})
+				.then((res) => {
+					const fragment = document.createDocumentFragment();
+					renderFilm(res.data, fragment, result);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+	}
 });
 
 //Evento para el boton de volver
