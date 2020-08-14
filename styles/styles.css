@@ -9,6 +9,9 @@ header {
 a i {
 	color: aliceblue;
 }
+img {
+	max-width: 100%;
+}
 
 .title {
 	text-align: center;
@@ -72,7 +75,6 @@ a i {
 }
 .film {
 	width: 180px;
-
 	background-color: #292929;
 	text-align: center;
 	font-size: large;
@@ -85,9 +87,7 @@ a i {
 	top: 10px;
 	right: 10px;
 }
-img {
-	max-width: 100%;
-}
+
 .modal {
 	position: fixed;
 	top: 0;

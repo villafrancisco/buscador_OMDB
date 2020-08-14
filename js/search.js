@@ -5,6 +5,7 @@ const detail = document.getElementById('detail');
 const close = document.getElementById('close');
 const favorites = document.getElementById('favorites');
 const back = document.getElementById('back');
+const exit = document.getElementById('exit');
 
 let user = {
 	id: '',
@@ -268,4 +269,11 @@ back.addEventListener('click', (e) => {
 	resetPage();
 	result.innerHTML = '';
 	searchByTitle(form.film.value);
+});
+
+//Salir y cerrar sesion
+exit.addEventListener('click', (e) => {
+	console.log(user.id);
+	sessionStorage.removeItem(user.id);
+	location.reload();
 });
