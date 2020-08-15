@@ -6,6 +6,7 @@ const close = document.getElementById('close');
 const favorites = document.getElementById('favorites');
 const back = document.getElementById('back');
 const exit = document.getElementById('exit');
+const loading = document.getElementById('loading');
 
 let user = {
 	id: '',
@@ -15,46 +16,69 @@ let user = {
 };
 
 user = JSON.parse(localStorage.getItem(uid));
+let numtotalpages;
+let page = 1;
+const callback = (entries) => {
+	entries.forEach((entry) => {
+		if (entry.isIntersecting && numtotalpages > page) {
+			page = page + 1;
+
+			searchByTitle(form.film.value, page);
+		}
+	});
+};
+
+const setObserver = () => {
+	const options = {
+		threshold: 0.5
+	};
+	const observer = new IntersectionObserver(callback, options);
+	observer.observe(result.lastElementChild);
+};
 
 //Busqueda por titulo
-searchByTitle = (title) => {
-	axios({
-		method: 'GET',
-		url: `http://www.omdbapi.com/?s=${title}&type=movie&apikey=87ed9d5a`
-	})
-		.then((res) => {
-			const fragment = document.createDocumentFragment();
-			for (const film of res.data.Search) {
-				//Dibujo cada pelicula
-				renderFilm(film, fragment, result);
-			}
-		})
-		.catch((err) => {
-			const p = document.createElement('P');
-			p.textContent = 'No se ha encontrado ningún resultado';
-			p.classList.add('error');
-			result.append(p);
-			console.log(err);
+const searchByTitle = async (title, page = 1) => {
+	try {
+		loading.style.display = 'inline-block';
+		const res = await axios({
+			method: 'GET',
+			url: `http://www.omdbapi.com/?s=${title}&page=${page}&type=movie&apikey=87ed9d5a`
 		});
+		numtotalpages = Math.ceil(res.data.totalResults / 10);
+
+		const fragment = document.createDocumentFragment();
+		for (const film of res.data.Search) {
+			//Dibujo cada pelicula
+			renderFilm(film, fragment, result);
+		}
+		setObserver();
+	} catch (err) {
+		const p = document.createElement('P');
+		p.textContent = 'No se ha encontrado ningún resultado';
+		p.classList.add('error');
+		result.append(p);
+		console.log(err);
+	} finally {
+		loading.style.display = 'none';
+	}
 };
 
 //Busqueda por id
-searchById = (id) => {
-	axios({
-		method: 'GET',
-		url: `http://www.omdbapi.com/?i=${id}&apikey=87ed9d5a`
-	})
-		.then((res) => {
-			//Dibujo los detalles de la pelicula
-			renderFilmDetail(res.data, detail);
-		})
-		.catch((err) => {
-			console.log(err);
+const searchById = async (id) => {
+	try {
+		const res = await axios({
+			method: 'GET',
+			url: `http://www.omdbapi.com/?i=${id}&apikey=87ed9d5a`
 		});
+		//Dibujo los detalles de la pelicula
+		renderFilmDetail(res.data, detail);
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 //Funcion para dibujar cada pelicula, le pasamos la pelicula, un fragmento, y un elemento donde dibujarla
-renderFilm = (film, fragment, divtorender) => {
+const renderFilm = (film, fragment, divtorender) => {
 	const div = document.createElement('DIV');
 	div.setAttribute('class', 'film');
 	div.setAttribute('id', `${film.imdbID}`);
@@ -86,7 +110,7 @@ renderFilm = (film, fragment, divtorender) => {
 	divtorender.append(fragment);
 };
 //Dibujamos los detalles de una pelicula, le pasamos la pelicula y el elemento donde dibujarla
-renderFilmDetail = (film, divtorender) => {
+const renderFilmDetail = (film, divtorender) => {
 	showModal();
 	detail.lastChild.innerHTML = '';
 
@@ -148,7 +172,7 @@ renderFilmDetail = (film, divtorender) => {
 };
 
 //Añadimos el id de la pelicula a favoritos
-addfavorite = (id) => {
+const addfavorite = (id) => {
 	user.fav.push(id);
 
 	localStorage.removeItem(user.id);
@@ -156,7 +180,7 @@ addfavorite = (id) => {
 };
 
 //Borramos el id de la pelicula de favoritos
-removefavorite = (id) => {
+const removefavorite = (id) => {
 	user.fav.splice(user.fav.indexOf(id), 1);
 
 	localStorage.removeItem(user.id);
@@ -164,18 +188,18 @@ removefavorite = (id) => {
 };
 
 //Mostrar modal
-showModal = () => {
+const showModal = () => {
 	modal.classList.add('modal--show');
 	document.getElementById('searcher').classList.add('modal--open');
 };
 //Ocultal modal
-hideModal = () => {
+const hideModal = () => {
 	modal.classList.remove('modal--show');
 	document.getElementById('searcher').classList.remove('modal--open');
 };
 
 //Mostramos la pagina de busqueda como al principio de la carga de la pagina, esta funcion es para cuando pulsamos en la tecla de volver que nos muestre el buscador
-resetPage = () => {
+const resetPage = () => {
 	document.getElementById('search').parentElement.classList.remove('hidden');
 	document.getElementById('back').classList.add('hidden');
 	document.getElementById('header').firstElementChild.textContent = 'Busca tu pelicula';
@@ -192,7 +216,8 @@ document.form.addEventListener('submit', (e) => {
 //Evento al pulsar el boton de buscar
 search.addEventListener('click', (e) => {
 	result.innerHTML = '';
-	searchByTitle(form.film.value);
+	page = 1;
+	searchByTitle(form.film.value, page);
 });
 
 //Evento para comprobar en que pelicula hemos pulsado para ver los detalles y si hemos pulsado para agregar a favoritos
@@ -268,12 +293,12 @@ favorites.addEventListener('click', (e) => {
 back.addEventListener('click', (e) => {
 	resetPage();
 	result.innerHTML = '';
-	searchByTitle(form.film.value);
+	page = 1;
+	searchByTitle(form.film.value, page);
 });
 
 //Salir y cerrar sesion
 exit.addEventListener('click', (e) => {
-	console.log(user.id);
-	sessionStorage.removeItem(user.id);
+	sessionStorage.clear();
 	location.reload();
 });
