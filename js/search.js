@@ -7,11 +7,14 @@ const favorites = document.getElementById('favorites');
 const back = document.getElementById('back');
 const exit = document.getElementById('exit');
 const loading = document.getElementById('loading');
+const checkbox = document.getElementById('checkbox');
+const root = document.documentElement;
 
 let user = {
 	id: '',
 	name: '',
 	pass: '',
+	themedark: '',
 	fav: []
 };
 
@@ -187,6 +190,27 @@ const removefavorite = (id) => {
 	localStorage.setItem(user.id, JSON.stringify(user));
 };
 
+const changeThemeUser = (theme) => {
+	theme == 'light' ? (user.themedark = 'false') : (user.themedark = 'true');
+
+	localStorage.removeItem(user.id);
+	localStorage.setItem(user.id, JSON.stringify(user));
+};
+
+const themeDark = (option) => {
+	if (option == 'true') {
+		root.style.setProperty('--main-bg-color', '#504E4E');
+		root.style.setProperty('--main-content-color', 'aliceblue');
+		root.style.setProperty('--header-bg-color', '#292929');
+		root.style.setProperty('--modal-bg-color', 'rgba(0,0,0,0.9)');
+	} else {
+		root.style.setProperty('--main-bg-color', '#F5F5F5');
+		root.style.setProperty('--main-content-color', '#333333');
+		root.style.setProperty('--header-bg-color', '#E0DBDA');
+		root.style.setProperty('--modal-bg-color', 'rgba(220,220,220,0.9)');
+	}
+};
+
 //Mostrar modal
 const showModal = () => {
 	modal.classList.add('modal--show');
@@ -203,6 +227,12 @@ const resetPage = () => {
 	document.getElementById('search').parentElement.classList.remove('hidden');
 	document.getElementById('back').classList.add('hidden');
 	document.getElementById('header').firstElementChild.textContent = 'Busca tu pelicula';
+	if (user.themedark == 'true' || user.themedark == '') {
+		themeDark('true');
+	} else {
+		themeDark('false');
+		checkbox.checked = true;
+	}
 };
 
 //Inicializamos la página de busqueda
@@ -301,4 +331,15 @@ back.addEventListener('click', (e) => {
 exit.addEventListener('click', (e) => {
 	sessionStorage.clear();
 	location.reload();
+});
+
+//Evento para marcar el tema de color
+checkbox.addEventListener('change', (e) => {
+	if (e.target.checked) {
+		themeDark('false');
+		changeThemeUser('light');
+	} else {
+		themeDark('true');
+		changeThemeUser('dark');
+	}
 });

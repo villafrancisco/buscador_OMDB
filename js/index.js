@@ -2,6 +2,7 @@ const user = {
 	id: '',
 	name: '',
 	pass: '',
+	themedark: '',
 	fav: []
 };
 
@@ -20,20 +21,20 @@ log.addEventListener('click', (e) => {
 	if (form.name.value == '') {
 		objValidate.name = false;
 
-		document.getElementById('name').nextElementSibling.classList.remove('hidden');
+		document.getElementById('name').nextElementSibling.classList.remove('novisible');
 		document.getElementById('name').nextElementSibling.classList.add('visible');
 	} else {
 		objValidate.name = true;
-		document.getElementById('name').nextElementSibling.classList.add('hidden');
+		document.getElementById('name').nextElementSibling.classList.add('novisible');
 		document.getElementById('name').nextElementSibling.classList.remove('visible');
 	}
 	if (form.password.value == '') {
 		objValidate.pass = false;
-		document.getElementById('password').nextElementSibling.classList.remove('hidden');
+		document.getElementById('password').nextElementSibling.classList.remove('novisible');
 		document.getElementById('password').nextElementSibling.classList.add('visible');
 	} else {
 		objValidate.pass = true;
-		document.getElementById('password').nextElementSibling.classList.add('hidden');
+		document.getElementById('password').nextElementSibling.classList.add('novisible');
 		document.getElementById('password').nextElementSibling.classList.remove('visible');
 	}
 
