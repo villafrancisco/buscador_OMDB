@@ -1,24 +1,23 @@
-:root{
-	--main-bg-color:#504E4E;
-	--main-content-color:aliceblue;
-	--header-bg-color:#292929;
-	--modal-bg-color:rgba(0, 0, 0, 0.9);
-
+:root {
+	--main-bg-color: #504e4e;
+	--main-content-color: aliceblue;
+	--header-bg-color: #292929;
+	--modal-bg-color: rgba(0, 0, 0, 0.9);
 }
 
 body {
-	background-color:var(--main-bg-color);
+	background-color: var(--main-bg-color);
 	color: var(--main-content-color);
 	font-family: sans-serif;
 }
 header {
 	background-color: var(--header-bg-color);
 	display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-wrap: nowrap;
+	justify-content: space-evenly;
+	align-items: center;
+	flex-wrap: nowrap;
 }
-}
+
 a i {
 	color: var(--main-content-color);
 }
@@ -95,6 +94,12 @@ img {
 	margin-bottom: 20px;
 	position: relative;
 	cursor: pointer;
+	transition: transform 0.3s;
+}
+
+.film:hover {
+	transform: scale(1.1);
+	z-index: 100;
 }
 .film i {
 	position: absolute;
@@ -115,6 +120,7 @@ img {
 	transform: scale(0);
 	transition: transform 0.3s;
 	overflow: hidden;
+	z-index: 1000;
 }
 
 .modal .detail {

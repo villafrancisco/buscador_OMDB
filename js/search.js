@@ -54,6 +54,7 @@ const searchByTitle = async (title, page = 1) => {
 			//Dibujo cada pelicula
 			renderFilm(film, fragment, result);
 		}
+
 		setObserver();
 	} catch (err) {
 		const p = document.createElement('P');
@@ -269,7 +270,7 @@ result.addEventListener('click', (e) => {
 		}
 	}
 });
-
+//Cerrar el modal
 close.addEventListener('click', (e) => {
 	hideModal();
 });
